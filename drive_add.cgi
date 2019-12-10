@@ -19,7 +19,8 @@ log_write() {
 
     (
         cd /home/rho/drive_history/
-        git commit -am "Change" && git push
+        git add .
+        git commit -m "test" && git push
     )
 }
 
