@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Driving History</title>
+    <link rel="icon" type="image/svg+xml" href="images/car.svg">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="location.reaload(forceGet)">
+    <h1><src="images/car.svg"> Driving history</h1>
+
+
+    <form action="/cgi-bin/drive_add.cgi" method="post">
+        <button type="submit" name="Rene Hoffmann" value="1">Rene+</button>
+        <button type="submit" name="Matthias Rober" value="1">Matthias+</button>
+    </form>
+
+    <form action="/cgi-bin/drive_add.cgi" method="post">
+        <button type="submit" name="Rene Hoffmann" value="2">Rene++</button>
+        <button type="submit" name="Matthias Rober" value="2">Matthias++</button>
+    </form>
+
+    <p id='log'>
+    </p>
+</body>
+</html>
+
+
