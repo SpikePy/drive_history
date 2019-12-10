@@ -17,8 +17,10 @@ log_write() {
         sed "/id='log'/a <ul>`date`\n<li>$1 $2</li><li>$1 $2</li></ul>" -i /home/rho/drive_history/driving_history.html
     fi
 
-    cd /home/rho/drive_history/
-    git commit -am "Change" && git push
+    (
+        cd /home/rho/drive_history/
+        git commit -am "Change" && git push
+    )
 }
 
 cat << EOF
