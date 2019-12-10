@@ -2,11 +2,53 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no" ZZ/>
     <title>Driving History</title>
     <link rel="icon" type="image/svg+xml" href="images/car.svg">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            text-align: center;
+            font-size: 2.5vw;
+        }
+
+        h1 {
+            font-size: 10vw;
+        }
+
+        button {
+            width: 20vw;
+            height: 10vh;
+            font-size: 2.5vw;
+            margin: 1vw;
+        }
+
+        table {
+            margin: 10vw;
+            margin-left:  auto;
+            margin-right: auto;
+        }
+
+        ul {
+            font-size: 3vw;
+            padding-left: 0;
+
+        }
+        li {
+            font-size: 2.5vw;
+        }
+
+        #log {
+          margin-top: 10vw;
+        }
+    </style>
+  <script>
+      function analyze() {
+        document.getElementById("eval-rene-hoffmann").innerHTML  = document.getElementsByClassName('ReneHoffmann').length
+        document.getElementById("eval-matthias-rober").innerHTML = document.getElementsByClassName('MatthiasRober').length
+      }
+  </script>
 </head>
-<body onload="location.reaload(true)">
+<body onload="analyze()">
     <h1><src="images/car.svg"> Driving history</h1>
 
 
@@ -20,10 +62,26 @@
         <button type="submit" name="Matthias Rober" value="2">Matthias++</button>
     </form>
 
-    <p id='log'>
-<ul>Tue Dec 10 18:48:46 CET 2019
-<li>Matthias Rober</li><li>Matthias Rober</li></ul>
-    </p>
+    <table>
+         <tr>
+            <th>Rene Hoffmann</th>
+            <th>Matthias Rober</th>
+         </tr>
+         <tr>
+             <td id="eval-rene-hoffmann">calculating</td>
+             <td id="eval-matthias-rober">calculating</td>
+         </tr>
+     </table>
+
+     <div id='log'><h2>Log</h2>
+<ul>Tue Dec 10 20:56:01 CET 2019<li class="ReneHoffmann">Rene Hoffmann</li></ul>
+<ul>Tue Dec 10 20:55:58 CET 2019<li class="ReneHoffmann">Rene Hoffmann</li><li class="ReneHoffmann">Rene Hoffmann</li></ul>
+<ul>Tue Dec 10 20:55:56 CET 2019<li class="MatthiasRober">Matthias Rober</li><li class="MatthiasRober">Matthias Rober</li></ul>
+<ul>Tue Dec 10 20:55:54 CET 2019<li class="MatthiasRober">Matthias Rober</li></ul>
+<ul>Tue Dec 10 20:55:52 CET 2019<li class="ReneHoffmann">Rene Hoffmann</li></ul>
+<ul>Tue Dec 10 20:55:51 CET 2019<li class="ReneHoffmann">Rene Hoffmann</li><li class="ReneHoffmann">Rene Hoffmann</li></ul>
+<ul>Tue Dec 10 20:55:49 CET 2019<li class="MatthiasRober">Matthias Rober</li><li class="MatthiasRober">Matthias Rober</li></ul>
+    </div>
 </body>
 </html>
 
