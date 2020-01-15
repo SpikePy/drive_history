@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-log=`cat /var/www/html/driving_history.html`
+log=/var/www/html/driving_history.html
 
 cat << EOF
   <!DOCTYPE html>
@@ -13,11 +13,11 @@ cat << EOF
       <h1>Driving - Log</h1>
       <p>
         <h2>Rene Hoffmann</h2>
-        `echo "$log" | grep --only-matching "Rene Hoffmann</li>" | wc -l`
+        `cat "$log" | grep --only-matching --ignore-case "rene.*?+</li>" | wc -l`
       </p>
       <p>
         <h2>Matthias Rober</h2>
-        `echo "$log" | grep --only-matching "Matthias Rober</li>" | wc -l`
+        `cat "$log" | grep --only-matching --ignore-case "matthias.*?+</li>" | wc -l`
       </p>
     </body>
 EOF
