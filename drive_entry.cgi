@@ -11,7 +11,7 @@ args=$(echo "${args}" | tr '&' ';')
 eval $args
 
 log_write() {
-    entry="
+    template_entry="
         <p>$date
             <ul>
                 <li class='ren $ren' value='$ren'>René ($ren)</li>
@@ -22,12 +22,10 @@ log_write() {
 
     if grep "$date" $file_website > /dev/null; then
         echo "Entry Changed<br>"
-       # sed "s|.*$date.*|`echo $entry`|" -i $file_website
-       sed "s|.*$date.*|<p>$date<ul><li class='ren $ren' value='$ren'>René ($ren)</li><li class='mat $mat' value='$mat'>Matthias ($mat)</li><li class='yve $yve' value='$yve'>Yvette ($yve)</li></ul></p>|" -i $file_website
+        sed "s|.*$date.*|`echo $template_entry`|" -i $file_website
     else
         echo "Entry Added<br>"
-        #sed "/id='log'/a `echo $entry`" -i $file_website
-        sed "/id='log'/a <p>$date<ul><li class='ren $ren' value='$ren'>René ($ren)</li><li class='mat $mat' value='$mat'>Matthias ($mat)</li><li class='yve $yve' value='$yve'>Yvette ($yve)</li></ul></p>" -i $file_website
+        sed "/id='log'/a `echo $template_entry`" -i $file_website
     fi
 
     echo "$args<br>"
@@ -51,7 +49,6 @@ cat << EOF
         }
     </style>
 </head>
-<body onload="window.location=document.referrer">
 <body>
     `log_write`
 </body>
