@@ -1,28 +1,36 @@
 #!/usr/bin/env bash
 
 # Website File
-file_website=/home/rho/drive_history/driving_history.html
+file_website='/home/rho/drive_history/driving_history.html'
 
-# Get Query String from URL
+# Get Parameter from URL Arguments
 read args
 
-# Parse Arguments from Query String
-args=$(echo "${args}" | tr '+=' ' ')
-
-#echo ${args[0]}
+# Parse Parameter from URL Arguments and Evaluate them
+args=$(echo "${args}" | tr '&' ';')
+eval $args
 
 log_write() {
-    shortName=$2
-    firstName=$3
-    lastName=$4
-    activity=$5
-    count=$6
+    entry="
+        <p>$date
+            <ul>
+                <li class='ren $ren' value='$ren'>René ($ren)</li>
+                <li class='mat $mat' value='$mat'>Matthias ($mat)</li>
+                <li class='yve $yve' value='$yve'>Yvette ($yve)</li>
+            </ul>
+        </p>"
 
-    if grep "`date +%Y-%m-%d`" $file_website; then
-        sed "/`date +%Y-%m-%d`/a <li title=\"$activity\" class=\"${shortName}_${activity}_${count} ${activity}\">$firstName $lastName ($count)</li>" -i $file_website
+    if grep "$date" $file_website > /dev/null; then
+        echo "Entry Changed<br>"
+       # sed "s|.*$date.*|`echo $entry`|" -i $file_website
+       sed "s|.*$date.*|<p>$date<ul><li class='ren $ren' value='$ren'>René ($ren)</li><li class='mat $mat' value='$mat'>Matthias ($mat)</li><li class='yve $yve' value='$yve'>Yvette ($yve)</li></ul></p>|" -i $file_website
     else
-        sed "/id='log'/a <p>`date +%Y-%m-%d`<ul>\n<li title=\"$activity\" class=\"${shortName}_${activity}_${count} ${activity}\">$firstName $lastName ($count)</li>\n</ul></p>" -i $file_website
+        echo "Entry Added<br>"
+        #sed "/id='log'/a `echo $entry`" -i $file_website
+        sed "/id='log'/a <p>$date<ul><li class='ren $ren' value='$ren'>René ($ren)</li><li class='mat $mat' value='$mat'>Matthias ($mat)</li><li class='yve $yve' value='$yve'>Yvette ($yve)</li></ul></p>" -i $file_website
     fi
+
+    echo "$args<br>"
 }
 
 cat << EOF
@@ -44,9 +52,12 @@ cat << EOF
     </style>
 </head>
 <body onload="window.location=document.referrer">
-    `log_write ${args}`
+<body>
+    `log_write`
 </body>
 </html>
 EOF
 
-#<body onload="alert('Saved');window.location=document.referrer">
+
+#<body onload="window.location=document.referrer">
+# date +%Y-%m-%d

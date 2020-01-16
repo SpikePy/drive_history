@@ -22,10 +22,13 @@
             margin: 3em;
         }
 
+        input {
+            text-align: center;
+            width: 6em;
+            font-size: 1em;
+        }
         button {
             padding:   0px;
-            width:     6.5em;
-            height:    3em;
             font-size: 1em;
             margin:    .1em .2em;
         }
@@ -35,6 +38,7 @@
         }
         td {
             width: 5em;
+            padding: .2em;
         }
 
         #log > p {
@@ -54,74 +58,83 @@
             list-style-type: none;
         }
 
-        .driver {
-          color: black;
+        .2 {
+          color: red;
         }
 
-        .passenger {
+        .-2 {
           color: grey;
         }
     </style>
-  <script>
-      function analyze() {
-        document.getElementById("eval-ren").innerHTML = (document.getElementsByClassName('ren_driver_2').length*2 + document.getElementsByClassName('ren_driver_1').length) - (document.getElementsByClassName('ren_passenger_2').length*2 + document.getElementsByClassName('ren_passenger_1').length)
-        document.getElementById("eval-mat").innerHTML = (document.getElementsByClassName('mat_driver_2').length*2 + document.getElementsByClassName('mat_driver_1').length) - (document.getElementsByClassName('mat_passenger_2').length*2 + document.getElementsByClassName('mat_passenger_1').length)
-        document.getElementById("eval-yve").innerHTML = (document.getElementsByClassName('yve_driver_2').length*2 + document.getElementsByClassName('yve_driver_1').length) - (document.getElementsByClassName('yve_passenger_2').length*2 + document.getElementsByClassName('yve_passenger_1').length)
-      }
-  </script>
+    <script>
+        function loaded() {
+            today         = new Date()
+            year          = today.getYear()+1900
+            month         = "" +today.getMonth()+1
+            day           = "" +today.getDate()
+            date          = `${year}-${month}-${day}`
+            td_date.value = date
+
+            document.getElementById("eval-ren").innerHTML = (document.getElementsByClassName('ren driver 2').length*2 + document.getElementsByClassName('ren driver 1').length) - (document.getElementsByClassName('ren passenger 2').length*2 + document.getElementsByClassName('ren passenger 1').length)
+            document.getElementById("eval-mat").innerHTML = (document.getElementsByClassName('mat driver 2').length*2 + document.getElementsByClassName('mat driver 1').length) - (document.getElementsByClassName('mat passenger 2').length*2 + document.getElementsByClassName('mat passenger 1').length)
+            document.getElementById("eval-yve").innerHTML = (document.getElementsByClassName('yve driver 2').length*2 + document.getElementsByClassName('yve driver 1').length) - (document.getElementsByClassName('yve passenger 2').length*2 + document.getElementsByClassName('yve passenger 1').length)
+        }
+    </script>
 </head>
-<body onload="analyze()">
+<body onload="loaded()">
     <h1><src="images/car.svg"> Driving history</h1>
 
 
     <div class="interaction-area">
+        <h2>Create new Entry</h2>
         <form action="/cgi-bin/drive_entry.cgi" method="post">
-            <button type="submit" name="args" value="ren Rene     Hoffmann driver    1">Rene+</button>
-            <button type="submit" name="args" value="ren Rene     Hoffmann passenger 1">Rene-</button>
-            <button type="submit" name="args" value="mat Matthias Rober    driver    1">Matthias+</button>
-            <button type="submit" name="args" value="mat Matthias Rober    passenger 1">Matthias-</button>
-            <button type="submit" name="args" value="yve Yvette   Planz    driver    1">Yvette+</button>
-            <button type="submit" name="args" value="yve Yvette   Planz    passenger 1">Yvette-</button>
-        </form>
-
-        <form action="/cgi-bin/drive_entry.cgi" method="post">
-            <button type="submit" name="args" value="ren Rene     Hoffmann driver    2">Rene++</button>
-            <button type="submit" name="args" value="ren Rene     Hoffmann passenger 2">Rene--</button>
-            <button type="submit" name="args" value="mat Matthias Rober    driver    2">Matthias++</button>
-            <button type="submit" name="args" value="mat Matthias Rober    passenger 2">Matthias--</button>
-            <button type="submit" name="args" value="yve Yvette   Planz    driver    2">Yvette++</button>
-            <button type="submit" name="args" value="yve Yvette   Planz    passenger 2">Yvette--</button>
+            <table>
+                <tr>
+                    <td>Date</td>
+                    <td><input type='text'   name='date' value=''  id='td_date' title='YYYY-MM-DD' disabled></td>
+                </tr>
+                <tr>
+                    <td>Rene</td>
+                    <td><input type='number' name='ren'  value='0' min='-2' max='2'></td>
+                </tr>
+                <tr>
+                    <td>Mattias</td>
+                    <td><input type='number' name='mat'  value='0' min='-2' max='2'></td>
+                </tr>
+                <tr>
+                    <td>Yvette</td>
+                    <td><input type='number' name='yve'  value='0' min='-2' max='2'></td>
+                </tr>
+                <tr>
+                    <td colspan='2'><button type='submit'>Submit</button></td>
+                </tr>
+            </table>
         </form>
     </div>
 
-    <table>
-        <tr>
-            <th>Rene</th>
-            <th>Matthias</th>
-            <th>Yvette</th>
-        </tr>
-        <tr>
-            <td id="eval-ren">-</td>
-            <td id="eval-mat">-</td>
-            <td id="eval-yve">-</td>
-        </tr>
-    </table>
+    <div id='evaluation'>
+        <h2>Evaluation</h2>
+        <table>
+            <tr>
+                <th>Rene</th>
+                <th>Matthias</th>
+                <th>Yvette</th>
+            </tr>
+            <tr>
+                <td id="eval-ren">-</td>
+                <td id="eval-mat">-</td>
+                <td id="eval-yve">-</td>
+            </tr>
+        </table>
+    </div>
 
     <div id='log'><h2>Log</h2>
-<p>2020-01-15<ul>
-<li title="passenger" class="ren_passenger_2 passenger">Rene Hoffmann (2)</li>
-<li title="passenger" class="mat_passenger_1 passenger">Matthias Rober (1)</li>
-<li title="driver" class="yve_driver_2 driver">Yvette Planz (2)</li>
-</ul></p>
-<p>2020-01-07<ul>
-<li title="passenger" class="mat_passenger_2 passenger">Matthias Rober (2)</li>
-<li title="driver" class="ren_driver_2 driver">Rene Hoffmann (2)</li>
-</ul></p>
-<p>2020-01-06<ul>
-<li title="passenger" class="ren_passenger_2 passenger">Rene Hoffmann (2)</li>
-<li title="driver" class="mat_driver_2 driver">Matthias Rober (2)</li>
-</ul></p>
+<p>2020-01-16<ul><li class='ren 2' value='2'>René (2)</li><li class='mat 0' value='0'>Matthias (0)</li><li class='yve -2' value='-2'>Yvette (-2)</li></ul></p>
+
+<!-- Correct Entries -->
+<p>2020-01-15<ul><li class="ren -2" value="-2">Rene (-2)</li><li class="mat -1" value="-1">Matthias (-1)</li><li class="yve 2" value="2">Yvette (2)</li></ul></p>
+<p>2020-01-07<ul><li class="mat -2" value="-2">Matthias (-2)</li><li class="ren 2" value="2">Rene (2)</li></ul></p>
+<p>2020-01-06<ul><li class="ren -2" value="-2">Rene (-2)</li><li class="mat 2" value="2">Matthias (2)</li></ul></p>
     </div>
 </body>
 </html>
-
