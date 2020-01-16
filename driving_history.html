@@ -28,9 +28,9 @@
             font-size: 1em;
         }
         button {
-            padding:   0px;
+            width: 100%;
+            padding: .5em;
             font-size: 1em;
-            margin:    .1em .2em;
         }
 
         table {
@@ -58,14 +58,17 @@
             list-style-type: none;
         }
 
-        .2 {
+        .activity_1, .activity_2 {
+          color: green;
+        }
+        .activity_0 {
+          display: none;
+        }
+        .activity_-1, .activity_-2 {
           color: red;
         }
-
-        .-2 {
-          color: grey;
-        }
     </style>
+    <script src="driving_history_data.js"></script>
     <script>
         function loaded() {
             today         = new Date()
@@ -75,9 +78,17 @@
             date          = `${year}-${month}-${day}`
             td_date.value = date
 
-            document.getElementById("eval-ren").innerHTML = (document.getElementsByClassName('ren driver 2').length*2 + document.getElementsByClassName('ren driver 1').length) - (document.getElementsByClassName('ren passenger 2').length*2 + document.getElementsByClassName('ren passenger 1').length)
-            document.getElementById("eval-mat").innerHTML = (document.getElementsByClassName('mat driver 2').length*2 + document.getElementsByClassName('mat driver 1').length) - (document.getElementsByClassName('mat passenger 2').length*2 + document.getElementsByClassName('mat passenger 1').length)
-            document.getElementById("eval-yve").innerHTML = (document.getElementsByClassName('yve driver 2').length*2 + document.getElementsByClassName('yve driver 1').length) - (document.getElementsByClassName('yve passenger 2').length*2 + document.getElementsByClassName('yve passenger 1').length)
+            ren = []
+            Array.from(document.getElementsByClassName('ren')).forEach(el => ren.push(el.value))
+            ren.reduce((a,b) => a + b, 0)
+
+            ren_sum = 0; Array.from(document.getElementsByClassName('ren')).forEach(el => ren_sum += el.value)
+            mat_sum = 0; Array.from(document.getElementsByClassName('mat')).forEach(el => mat_sum += el.value)
+            yve_sum = 0; Array.from(document.getElementsByClassName('yve')).forEach(el => yve_sum += el.value)
+
+            document.getElementById("eval-ren").innerHTML = ren_sum
+            document.getElementById("eval-mat").innerHTML = mat_sum
+            document.getElementById("eval-yve").innerHTML = yve_sum
         }
     </script>
 </head>
@@ -129,12 +140,12 @@
     </div>
 
     <div id='log'><h2>Log</h2>
-<p>2020-01-16 <ul> <li class='ren 2' value='2'>René (2)</li> <li class='mat 0' value='0'>Matthias (0)</li> <li class='yve -2' value='-2'>Yvette (-2)</li> </ul> </p>
+<p>2020-01-16 <ul> <li class='ren activity_2' value='2'>René (2)</li> <li class='mat activity_0' value='0'>Matthias (0)</li> <li class='yve activity_-2' value='-2'>Yvette (-2)</li> </ul> </p>
 
 <!-- Correct Entries -->
-<p>2020-01-15<ul><li class="ren -2" value="-2">Rene (-2)</li><li class="mat -1" value="-1">Matthias (-1)</li><li class="yve 2" value="2">Yvette (2)</li></ul></p>
-<p>2020-01-07<ul><li class="mat -2" value="-2">Matthias (-2)</li><li class="ren 2" value="2">Rene (2)</li></ul></p>
-<p>2020-01-06<ul><li class="ren -2" value="-2">Rene (-2)</li><li class="mat 2" value="2">Matthias (2)</li></ul></p>
+<p>2020-01-15<ul><li class="ren activity_-2" value="-2">Rene (-2)</li><li class="mat activity_-1" value="-1">Matthias (-1)</li><li class="yve activity_2" value="2">Yvette (2)</li></ul></p>
+<p>2020-01-07<ul><li class="mat activity_-2" value="-2">Matthias (-2)</li><li class="ren activity_2" value="2">Rene (2)</li></ul></p>
+<p>2020-01-06<ul><li class="ren activity_-2" value="-2">Rene (-2)</li><li class="mat activity_2" value="2">Matthias (2)</li></ul></p>
     </div>
 </body>
 </html>

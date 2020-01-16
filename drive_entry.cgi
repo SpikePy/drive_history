@@ -2,6 +2,7 @@
 
 # Website File
 file_website='/home/rho/drive_history/driving_history.html'
+file_data='/home/rho/drive_history/driving_history_data.js'
 
 # Get Parameter from URL Arguments
 read args
@@ -10,13 +11,16 @@ read args
 args=$(echo "${args}" | tr '&' ';')
 eval $args
 
+# Store data in dedicated file
+echo "`date +date_%Y_%m_%d` = [['ren',$ren],['mat',$mat],['yve',$yve]]" >> $file_data
+
 log_write() {
     template_entry="
         <p>$date
             <ul>
-                <li class='ren $ren' value='$ren'>René ($ren)</li>
-                <li class='mat $mat' value='$mat'>Matthias ($mat)</li>
-                <li class='yve $yve' value='$yve'>Yvette ($yve)</li>
+                <li class='ren activity_$ren' value='$ren'>René ($ren)</li>
+                <li class='mat activity_$mat' value='$mat'>Matthias ($mat)</li>
+                <li class='yve activity_$yve' value='$yve'>Yvette ($yve)</li>
             </ul>
         </p>"
 
@@ -49,7 +53,7 @@ cat << EOF
         }
     </style>
 </head>
-<body>
+<body onload="window.location=document.referrer">
     `log_write`
 </body>
 </html>
