@@ -1,3 +1,6 @@
+# Show log on the page by removing the `hidden` class from certain elements
+# and adding it to others
+# Should be bound to a button
 function logShow() {
     document.getElementById('button_logShow').classList.add('hidden')
     document.getElementById('evaluation').classList.add('hidden')
@@ -5,6 +8,9 @@ function logShow() {
     document.getElementById('log').classList.remove('hidden')
 }
 
+# Undo the effects of `logShow()` so the hidden classes are reset
+# like when you initially opened the site
+# Should be bound to another button
 function logHide() {
     document.getElementById('button_logShow').classList.remove('hidden')
     document.getElementById('interaction-area').classList.remove('hidden')
@@ -12,6 +18,9 @@ function logHide() {
     document.getElementById('log').classList.add('hidden')
 }
 
+# Gets the current date in the form of YYYY-MM-DD and inserts it into the form
+# Calculates for everybody `driving - pessenger` and write it on the
+# Should be executed when the site finished loading
 function loaded() {
     today         = new Date()
     year          = today.getYear()+1900
