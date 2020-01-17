@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Website File
-file_website='/home/rho/drive_history/driving_history.html'
+file_website='/home/rho/drive_history/index.html'
 file_data='/home/rho/drive_history/driving_history_data.js'
 
 # Get Parameter from URL Arguments
