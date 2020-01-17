@@ -20,10 +20,6 @@ function loaded() {
     date          = `${year}-${month}-${day}`
     td_date.value = date
 
-    ren = []
-    Array.from(document.getElementsByClassName('ren')).forEach(el => ren.push(el.value))
-    ren.reduce((a,b) => a + b, 0)
-
     ren_sum = 0; Array.from(document.getElementsByClassName('ren')).forEach(el => ren_sum += el.value)
     mat_sum = 0; Array.from(document.getElementsByClassName('mat')).forEach(el => mat_sum += el.value)
     yve_sum = 0; Array.from(document.getElementsByClassName('yve')).forEach(el => yve_sum += el.value)
