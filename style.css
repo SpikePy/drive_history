@@ -70,6 +70,13 @@ li {
     list-style-type: none;
 }
 
+.eval-positive {
+      color: green;
+}
+
+.eval-negative {
+      color: red;
+}
 .activity_1, .activity_2 {
   color: green;
 }

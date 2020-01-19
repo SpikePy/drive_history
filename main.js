@@ -22,6 +22,18 @@ function logHide() {
     document.getElementById('log').classList.add('hidden')
 }
 
+// Evaluate driving history (by calculating counts of being driver - pessenger) and add a class to style the result accordingly
+function evaluate(shortName) {
+    sum = 0
+    Array.from(document.getElementsByClassName(shortName)).forEach(el => sum += el.value)
+
+    if      ( sum > 0 ) { document.getElementById("eval-" +shortName).className = "number eval-positive" }
+    else if ( sum < 0 ) { document.getElementById("eval-" +shortName).className = "number eval-negative" }
+    else                { document.getElementById("eval-" +shortName).className = "number"               }
+
+    document.getElementById("eval-" +shortName).innerHTML = sum
+}
+
 /*
  Gets the current date in the form of YYYY-MM-DD and inserts it into the form
  Calculates for everybody `driving - pessenger` and write it on the
@@ -35,13 +47,10 @@ function loaded() {
     date          = `${year}-${month}-${day}`
     td_date.value = date
 
-    ren_sum = 0; Array.from(document.getElementsByClassName('ren')).forEach(el => ren_sum += el.value)
-    mat_sum = 0; Array.from(document.getElementsByClassName('mat')).forEach(el => mat_sum += el.value)
-    yve_sum = 0; Array.from(document.getElementsByClassName('yve')).forEach(el => yve_sum += el.value)
-    savings = document.getElementsByClassName('activity_-2').length*2 + document.getElementsByClassName('activity_-1').length
+    evaluate("ren")
+    evaluate("mat")
+    evaluate("yve")
 
-    document.getElementById("eval-ren").innerHTML = ren_sum
-    document.getElementById("eval-mat").innerHTML = mat_sum
-    document.getElementById("eval-yve").innerHTML = yve_sum
+    savings = document.getElementsByClassName('activity_-2').length*2 + document.getElementsByClassName('activity_-1').length
     document.getElementById("eval-savings").innerHTML = savings
 }

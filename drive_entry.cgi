@@ -53,7 +53,7 @@ cat << EOF
         }
     </style>
 </head>
-<body onload="window.location=document.referrer">
+<body onload="window.location.href = document.referrer">
     `log_write`
 </body>
 </html>
