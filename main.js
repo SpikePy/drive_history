@@ -51,6 +51,7 @@ function loaded() {
     evaluate("mat")
     evaluate("yve")
 
-    savings = document.getElementsByClassName('activity_-2').length*2 + document.getElementsByClassName('activity_-1').length
-    document.getElementById("eval-savings").innerHTML = savings
+    saved_trips = 0
+    Array.from(document.getElementsByClassName('passenger')).forEach(el => saved_trips += el.value)
+    document.getElementById("eval-savings").innerHTML = Math.abs(saved_trips)
 }

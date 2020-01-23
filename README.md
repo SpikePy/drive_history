@@ -1,5 +1,23 @@
 # Project to track who was driving when
 
+## How To Use
+- As a __passenger__ input how many times you participated on that day with a __negative sign in front__
+- As a __driver__ input how many participants you were driving how many times that day/how many trips you helped to avoid
+
+
+### Examples
+1. `A` and `B` are driving with `C` to the destination and back
+  - For `A` and `B` the input has to be `-2` (each)
+  - For `C` input has to be `4` (as he helped to avoide 4 trips)
+1. `A` and `B` are driving with `C` to the destination but only `A` is driving back home with `C`
+  - `A`\`s input has to be `-2` (because he participated 2 times)
+  - `B`\`s input has to be `-1` (he participated only one time that day)
+  - For `C` input has to be `3` (as he helped the part save 3 trips)
+1. `A` is driving with `B` as passenger to the destination and back
+  - `B`\`s input has to be `-2`
+  - `A`\`s input has to be `2` (as he helped the part save 2 trips)
+
+
 ## Notes
 - get all variables with a certain regex:
 `Object.keys(window).toString().match(/date_\d\d\d\d_\d\d_\d\d/g)`
@@ -8,8 +26,3 @@
 - get values of first array element from variables searched via regex:
 `Object.keys(window).toString().match(/date_[_\d]+/g).forEach(el => {console.table(el, eval(el)[0])})`
 
-## ToDo
-Make 3 accounts with an array of 2 elements which stores the balance of this couple of driver and pessanger:
-- ren_mat = [0,0]
-- mat_yve = [0,0]
-- yve_ren = [0,0]

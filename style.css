@@ -70,19 +70,10 @@ li {
     list-style-type: none;
 }
 
-.eval-positive {
+.driver, .eval-positive {
       color: green;
 }
 
-.eval-negative {
+.passenger, .eval-negative {
       color: red;
-}
-.activity_1, .activity_2 {
-  color: green;
-}
-.activity_0 {
-  display: none;
-}
-.activity_-1, .activity_-2 {
-  color: red;
 }

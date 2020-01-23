@@ -14,25 +14,37 @@ eval $args
 # Store data in dedicated file
 echo "`date +date_%Y_%m_%d` = [['ren',$ren],['mat',$mat],['yve',$yve]]" >> $file_data
 
+activity() {
+    if   [ $# -eq 0 ]; then echo -n "hidden no-arguments"
+    else
+        case $1 in
+               0) echo -n "hidden";;
+           [1-9]) echo -n "driver";;
+          -[1-9]) echo -n "passenger";;
+               *) echo -n "error"
+        esac
+    fi
+}
+
 log_write() {
     template_entry="
         <p>$date
             <ul>
-                <li class='ren activity_$ren' value='$ren'>René ($ren)</li>
-                <li class='mat activity_$mat' value='$mat'>Matthias ($mat)</li>
-                <li class='yve activity_$yve' value='$yve'>Yvette ($yve)</li>
+                <li class='ren $(activity $ren)' value='$ren'>René ($ren)</li>
+                <li class='mat $(activity $mat)' value='$mat'>Matthias ($mat)</li>
+                <li class='yve $(activity $yve)' value='$yve'>Yvette ($yve)</li>
             </ul>
         </p>"
 
     if grep "$date" $file_website > /dev/null; then
-        echo "Entry Changed<br>"
-        sed "s|.*$date.*|`echo $template_entry`|" -i $file_website
+        echo -n "Entry Changed<br>"
+        sed "s|.*$date.*|`echo -n $template_entry`|" -i $file_website
     else
-        echo "Entry Added<br>"
-        sed "/id='log'/a `echo $template_entry`" -i $file_website
+        echo -n "Entry Added<br>"
+        sed "/id='log'/a `echo -n $template_entry`" -i $file_website
     fi
 
-    echo "$args<br>"
+    echo -n "$args<br>"
 }
 
 cat << EOF
@@ -41,7 +53,7 @@ cat << EOF
 <head>
     <meta charset="UTF-8">
     <title>Driving Log</title>
-    <link rel="icon" type="image/svg+xml" href="images/car.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         body {
             text-align:  center;
