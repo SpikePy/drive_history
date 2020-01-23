@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, user-scalable=no' ZZ/>
     <title>Driving History</title>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel='icon' type='image/svg+xml' href='favicon.svg'>
     <link rel='stylesheet' type='text/css' href='style.css'>
     <script src='driving_history_data.js'></script>
     <script src='main.js'></script>
 </head>
-<body onload='loaded()'>
+<body ondragstart="return false" ondrop="return false" onload='loaded()'>
     <h1><src='images/car.svg'> Driving history</h1>
 
 
     <div id='interaction-area'>
-        <h2>Create New Entry</h2>
+        <h2 title='PASSENGERs input how many times they were driven with a negative sign in front.
+DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
         <form action='/cgi-bin/drive_entry.cgi' method='post'>
             <table>
                 <tr>
-                    <td>Rene</td>
+                    <td>René</td>
                     <td><input type='number' name='ren'  value='0' min='-2' max='4'></td>
                 </tr>
                 <tr>
@@ -39,10 +40,10 @@
     </div>
 
     <div id='evaluation'>
-        <h2>Evaluation</h2>
+        <h2>Summary</h2>
         <table>
             <tr>
-                <td>Rene</td>
+                <td>René</td>
                 <td class='number' class='number'id='eval-ren'>-</td>
             </tr>
             <tr>
