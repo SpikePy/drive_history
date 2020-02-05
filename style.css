@@ -39,9 +39,17 @@ button {
 
 table {
     margin: .5rem auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+#log tr:nth-child(even) {
+    background: #E7E7E7
+}
+#log td:first-child {
+    text-align: center;
 }
 th {
-  padding: 0 .5rem;
+    padding: 0 .5rem;
 }
 td {
     font-size: 1rem;
