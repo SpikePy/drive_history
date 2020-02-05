@@ -4,28 +4,28 @@
  Should be bound to a button
 */
 function logShow() {
-    document.getElementById('button_logShow').classList.add('hidden')
-    document.getElementById('evaluation').classList.add('hidden')
-    document.getElementById('interaction-area').classList.add('hidden')
-    document.getElementById('log').classList.remove('hidden')
+    document.getElementById('button_logShow').classList.add('display-none')
+    document.getElementById('evaluation').classList.add('display-none')
+    document.getElementById('interaction-area').classList.add('display-none')
+    document.getElementById('log').classList.remove('display-none')
 }
 
 /*
- Undo the effects of `logShow()` so the hidden classes are reset
+ Undo the effects of `logShow()` so the display-none classes are reset
  like when you initially opened the site
  Should be bound to another button
 */
 function logHide() {
-    document.getElementById('button_logShow').classList.remove('hidden')
-    document.getElementById('interaction-area').classList.remove('hidden')
-    document.getElementById('evaluation').classList.remove('hidden')
-    document.getElementById('log').classList.add('hidden')
+    document.getElementById('button_logShow').classList.remove('display-none')
+    document.getElementById('interaction-area').classList.remove('display-none')
+    document.getElementById('evaluation').classList.remove('display-none')
+    document.getElementById('log').classList.add('display-none')
 }
 
 // Evaluate driving history (by calculating counts of being driver - pessenger) and add a class to style the result accordingly
 function evaluate(shortName) {
     sum = 0
-    Array.from(document.getElementsByClassName(shortName)).forEach(el => sum += el.value)
+    Array.from(document.getElementsByClassName(shortName)).forEach(el => sum += parseInt(el.getAttribute('data-value')))
 
     if      ( sum > 0 ) { document.getElementById("eval-" +shortName).className = "number eval-positive" }
     else if ( sum < 0 ) { document.getElementById("eval-" +shortName).className = "number eval-negative" }
@@ -42,8 +42,8 @@ function evaluate(shortName) {
 function loaded() {
     today         = new Date()
     year          = today.getYear()+1900
-    month         = "" +today.getMonth()+1
-    day           = "" +today.getDate()
+    month         = ("0" +(today.getMonth()+1)).slice(-2)
+    day           = ("0" +today.getDate()).slice(-2)
     date          = `${year}-${month}-${day}`
     td_date.value = date
 
@@ -52,6 +52,6 @@ function loaded() {
     evaluate("yve")
 
     saved_trips = 0
-    Array.from(document.getElementsByClassName('passenger')).forEach(el => saved_trips += el.value)
+    Array.from(document.getElementsByClassName('passenger')).forEach(el => saved_trips += parseInt(el.getAttribute('data-value')))
     document.getElementById("eval-savings").innerHTML = Math.abs(saved_trips)
 }
