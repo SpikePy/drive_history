@@ -13,6 +13,8 @@
 <body ondragstart="return false" ondrop="return false" onload='loaded()'>
     <h1><src='images/car.svg'> Driving history</h1>
 
+        <h2>Last Entry</h2>
+        <p id="p-last-entry"></p>
 
     <div id='interaction-area'>
         <h2 title='PASSENGERs input how many times they were driven with a negative sign in front.
@@ -67,7 +69,7 @@ DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
     <button id='button_logShow' onclick='logShow()'>Show Log</button>
     <div class='display-none' id='log'><h2>Log</h2><button id='button_logHide' onclick='logHide()'>Hide Log</button>
         <table>
-        <tr id='table-header'><th>Date</th><th>René</th><th>Matthias</th><th>Yvette</th></tr>
+            <tr id='table-header'><th>Date</th><th>René</th><th>Matthias</th><th>Yvette</th></tr>
             <tr> <td>2020-02-06</td> <td class='ren driver' data-person='ren' data-value='1'>1</td> <td class='mat hidden' data-person='mat' data-value='0'>0</td> <td class='yve passenger' data-person='yve' data-value='-1'>-1</td> </tr>
             <tr> <td>2020-02-05</td> <td class='ren driver' data-person='ren' data-value='2'>2</td> <td class='mat passenger' data-person='mat' data-value='-2'>-2</td> <td class='yve hidden' data-person='yve' data-value='0'>0</td> </tr>
             <tr><td>2020-02-03</td><td class='ren passenger' data-value='-2'>-2</td><td class='mat driver' data-value='2'>2</td> <td class='yve hidden' data-value='0'>0</td></tr>

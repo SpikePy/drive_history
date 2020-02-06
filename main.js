@@ -63,6 +63,8 @@ function evaluate(shortName) {
  Should be executed when the site finished loading
 */
 function loaded() {
+    document.getElementById("p-last-entry").innerText = data[0].date
+
     today         = new Date()
     year          = today.getYear()+1900
     month         = ("0" +(today.getMonth()+1)).slice(-2)
