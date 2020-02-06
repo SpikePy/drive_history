@@ -1,31 +1,30 @@
 #!/usr/bin/env bash
+echo '<response>'
 
 # Website File
 file_website='/home/rho/drive_history/index.html'
-file_data='/home/rho/drive_history/driving_history_data.js'
+file_data='/home/rho/drive_history/data.js'
 
 # Get Parameter from URL Arguments
 read args
+echo "<args>$args</args>"
+# exit
 
 # Test if Arguments match Pattern to prevent Misuse
-echo $args | grep --quiet --perl-regexp "^(\w+=-?\d+&?)*(date=\d{4}-\d{2}-\d{2})&?(\w+=-?\d+&?)*$" \
+echo $args | grep --quiet --perl-regexp "^(\w+=-?\d+;?)*(date=\d{4}-\d{2}-\d{2});?(\w+=-?\d+;?)*$" \
   || { echo 'Error: Arguments do not match defined pattern. Aborting script to prevent misuse.'; exit; }
 
 # Parse Parameter from URL Arguments and Evaluate them
-args=$(echo "${args}" | tr '&' ';')
+# args=$(echo "${args}" | tr '&' ';') replace '&' with ';' when data are send as url parameters
 eval $args
 
 activity() {
-    if   [ $# -eq 1 ]; then
-        case $1 in
-                           0 ) echo -n "hidden";;
-           [0-9]| [0-9][0-9] ) echo -n "driver";;
-          -[0-9]|-[0-9][0-9] ) echo -n "passenger";;
-                           * ) echo -n "Error: Can not define activity"; exit
-        esac
-    else
-        echo -n "Error: Can not define activity"; exit
-    fi
+    case $1 in
+                       0 ) echo -n "hidden";;
+       [0-9]| [0-9][0-9] ) echo -n "driver";;
+      -[0-9]|-[0-9][0-9] ) echo -n "passenger";;
+                       * ) echo -n "Error: Can not define activity"; exit
+    esac
 }
 
 
@@ -39,46 +38,21 @@ log_write() {
         </tr>"
 
     if grep --quiet "$date" $file_website; then
-        echo -n "Entry Changed<br>"
-        sed "s|.*$date.*|`echo -n $template_entry`|" -i $file_website &
+        echo "<entry>changed</entry>"
+        sed "s|.*$date.*|            `echo -n $template_entry`|" -i $file_website &
 
         # Store data in dedicated file
-        sed "s|.*$date.*|date_$date = [['ren',$ren],['mat',$mat],['yve',$yve]]|" -i $file_data &
+        sed "s|.*$date.*|    {\"date\":\"$date\",\t\"ren\":$ren,\t\"mat\":$mat,\t\"yve\":$yve},|" -i $file_data &
     else
-        echo -n "Entry Added<br>"
-        sed "/id='table-header'/a `echo -n $template_entry`" -i $file_website &
+        echo "<entry>added</entry>"
+        sed "/id='table-header'/a\            `echo -n $template_entry`" -i $file_website &
 
         # Store data in dedicated file
-        echo "date_$date = [['ren',$ren],['mat',$mat],['yve',$yve]]" >> $file_data &
+        sed "2i\    {\"date\":\"$date\",\t\"ren\":$ren,\t\"mat\":$mat,\t\"yve\":$yve}," -i $file_data &
     fi
 
-    echo -n "$args<br>"
 }
 
-cat << EOF
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Driving Log</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <style>
-        body {
-            text-align:  center;
-            font-family: sans-serif;
-            font-size:   48pt;
-            margin-top:  40vh;
-            background-color: LimeGreen;
-            color: white;
-        }
-    </style>
-</head>
-<body onload="window.location.href = document.referrer + '?' + parseInt(Math.random()*100)">
-    `log_write`
-</body>
-</html>
-EOF
+log_write
 
-
-#<body onload="window.location.href = document.referrer + '?date=' + new Date().valueOf()">
-# date +%Y-%m-%d
+echo '</response>'

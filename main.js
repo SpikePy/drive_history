@@ -1,3 +1,26 @@
+function submitData(formData) {
+    sum = 0
+    Array.from(document.getElementsByClassName('input-person')).forEach(el => {sum += parseInt(el.value)})
+    if (sum !== 0) {
+        alert('Please check your inputs. The sum of all inputs has to be 0!')
+        return
+    }
+
+    args = Array.from(formData).join(';').replace(/,/g,'=')
+
+    // alert(args)
+
+    var xhttp = new XMLHttpRequest()
+    xhttp.open("POST", "/cgi-bin/drive_entry.cgi", true)
+    xhttp.onreadystatechange = function () {
+        if(this.readyState === XMLHttpRequest.DONE && this.status == 200) {
+            location.reload(false)
+        }
+    }
+    xhttp.send(args)
+}
+
+
 /*
  Show log on the page by removing the `hidden` class from certain elements
  and adding it to others
