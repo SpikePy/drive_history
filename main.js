@@ -1,4 +1,5 @@
 var attendees = []
+var args_cgi  = []
 var sum       = {'ren':0,'mat':0,'yve':0,'saved_trips':0}
 
 
@@ -14,6 +15,13 @@ function submitData(formData) {
         return
     }
 
+    // From the Inputs build the string that can be directly inserted into the data file
+    Array.from(document.querySelectorAll('input[type=number]')).forEach(
+        input => args_cgi.push(`"${input.name}":${input.value}`)
+    )
+    args_cgi = `{"date":"${document.querySelector('input[type=text]').value}",${args_cgi.join()}}`
+    alert(args_cgi)
+
     args = Array.from(formData).join(';').replace(/,/g,'=')
 
     // alert(args)
@@ -26,7 +34,6 @@ function submitData(formData) {
             location.reload(false)
         }
     }
-    xhttp.send()
     xhttp.send(args)
 }
 
