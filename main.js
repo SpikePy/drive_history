@@ -1,30 +1,34 @@
 var attendees = []
-var args_cgi  = []
 var sum       = {'ren':0,'mat':0,'yve':0,'saved_trips':0}
 
 
 
 // Send input data via POST request to cgi script via button onclick
 function submitData(formData) {
-    sum = 0
 
     // Test if data are valid---meaning sum inputs have to be zero
-    Array.from(document.getElementsByClassName('input-attendee')).forEach(el => {sum += parseInt(el.value)})
+    sum = 0
+    attendees.forEach(attendee => {sum += parseInt(document.getElementsByName(attendee)[0].value)})
     if (sum !== 0) {
         alert('Please check your inputs. The sum of all inputs has to be 0!')
         return
     }
 
+    // Create array for CGI arguments with given date at index 0
+    var args_cgi = [`"date":"${document.getElementsByName('date')[0].value}"`]
+
     // From the Inputs build the string that can be directly inserted into the data file
-    Array.from(document.querySelectorAll('input[type=number]')).forEach(
-        input => args_cgi.push(`"${input.name}":${input.value}`)
+    attendees.forEach(
+        attendee => args_cgi.push(`"${attendee}":${document.getElementsByName(attendee)[0].value}`)
     )
-    args_cgi = `{"date":"${document.querySelector('input[type=text]').value}",${args_cgi.join()}}`
-    alert(args_cgi)
 
+    args_cgi = '{' + args_cgi.join(';').replace(/,/g,'=') + '}'
+    //args_cgi = encodeURI(args_cgi)
+    // document.write(args_cgi)
+
+
+    // Get Args object from form and send it to the cgi script via post request
     args = Array.from(formData).join(';').replace(/,/g,'=')
-
-    // alert(args)
 
     var xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/cgi-bin/drive_entry.cgi", true)
@@ -93,7 +97,7 @@ function analyze_data_print() {
  * Should be executed when the site finished loading */
 function loaded() {
     // Fill the array 'attendees' with all carpool attendees via the name of the input fields
-    Array.from(document.querySelectorAll('input[type=number][name][value]')).forEach(el => {attendees.push(el.name)})
+    document.querySelectorAll('input[type=number][name][value]').forEach(el => {attendees.push(el.name)})
 
     // Print date of last entry to page
     document.getElementById("p-last-entry").innerText = data[0].date
