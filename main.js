@@ -68,7 +68,15 @@ function generate_log_entries() {
         entry.classList.add('generated-entry')
         entry.innerHTML = `<td>${el.date}</td>`
         attendees.forEach( attendee => {
-            entry.innerHTML += `<td>${el[attendee]}</td>`
+            if (el[attendee] > 0) {
+                entry.innerHTML += `<td class='driver'>${el[attendee]}</td>`
+            }
+            else if (el[attendee] < 0) {
+                entry.innerHTML += `<td class='passenger'>${el[attendee]}</td>`
+            }
+            else {
+                entry.innerHTML += `<td class='hidden'>${el[attendee]}</td>`
+	    }
         })
     
         position = document.getElementById('table-header')
