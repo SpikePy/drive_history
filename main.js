@@ -132,3 +132,12 @@ function loaded() {
     analyze_data_print()
     document.getElementById("eval-savings").innerHTML = sum.saved_trips
 }
+
+// TODO?
+// // get array of unique keys
+// a = []
+// data.forEach( entry =>
+//     Object.keys(entry).forEach( el =>
+//             a.includes(el) || a.push(el)
+//     )             
+//)
