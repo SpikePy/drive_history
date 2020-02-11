@@ -48,18 +48,33 @@ function submitData(formData) {
  * Should be bound to a button */
 function log_display(state) {
     if (state == "show") {
+	generate_log_entries()
         document.querySelectorAll('div.section').forEach(el => el.classList.add('display-none'))
         document.getElementById('log').classList.remove('display-none')
     }
     else if (state == "hide") {
         document.querySelectorAll('div.section').forEach(el => el.classList.remove('display-none'))
         document.getElementById('log').classList.add('display-none')
+        Array.from(document.getElementsByClassName('generated-entry')).forEach(el => el.remove()) 
     }
     else {
         alert('Wrong argument passed to function.')
     }
 }
 
+function generate_log_entries() {
+    data.forEach(el => {
+        entry = document.createElement('tr')
+        entry.classList.add('generated-entry')
+        entry.innerHTML = `<td>${el.date}</td>`
+        attendees.forEach( attendee => {
+            entry.innerHTML += `<td>${el[attendee]}</td>`
+        })
+    
+        position = document.getElementById('table-header')
+        position.parentNode.append(entry)
+    })
+}
 
 
 function analyze_data() {
