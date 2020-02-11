@@ -22,23 +22,17 @@ function submitData(formData) {
         attendee => args_cgi.push(`"${attendee}":${document.getElementsByName(attendee)[0].value}`)
     )
 
-    args_cgi = '{' + args_cgi.join(';').replace(/,/g,'=') + '}'
-    //args_cgi = encodeURI(args_cgi)
-    // document.write(args_cgi)
-
-
-    // Get Args object from form and send it to the cgi script via post request
-    args = Array.from(formData).join(';').replace(/,/g,'=')
+    args_cgi = '{' + args_cgi.join(',') + '}'
 
     var xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/cgi-bin/drive_entry.cgi", true)
-    // xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function () {
         if(this.readyState === XMLHttpRequest.DONE && this.status == 200) {
             location.reload(false)
         }
     }
-    xhttp.send(args)
+    xhttp.send(args_cgi)
 }
 
 
