@@ -48,14 +48,15 @@ function submitData(formData) {
  * Should be bound to a button */
 function log_display(state) {
     if (state == "show") {
-	generate_log_entries()
+	if (document.getElementsByClassName('generated-entry').length === 0) {
+		generate_log_entries()
+	}
         document.querySelectorAll('div.section').forEach(el => el.classList.add('display-none'))
         document.getElementById('log').classList.remove('display-none')
     }
     else if (state == "hide") {
         document.querySelectorAll('div.section').forEach(el => el.classList.remove('display-none'))
         document.getElementById('log').classList.add('display-none')
-        Array.from(document.getElementsByClassName('generated-entry')).forEach(el => el.remove()) 
     }
     else {
         alert('Wrong argument passed to function.')
