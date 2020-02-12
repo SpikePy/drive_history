@@ -33,7 +33,7 @@ write_data() {
 
 check_url_parameters() {
     # Test if Arguments match Pattern to prevent Misuse
-    grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("\w+":-?\d+,?)*\}$' <<< $url_parameters \
+    grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\}$' <<< $url_parameters \
       || { echo 'Error: Arguments do not match defined pattern. Aborting script to prevent misuse.'; exit; }
 }
 

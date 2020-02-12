@@ -1,5 +1,5 @@
 var attendees = []
-var sum       = {'ren':0,'mat':0,'yve':0,'saved_trips':0}
+var sum       = {'René':0,'Matthias':0,'Yvette':0,'saved_trips':0}
 
 
 
@@ -100,11 +100,11 @@ function analyze_data() {
 // Evaluate driving history (by calculating counts of being driver - pessenger) and add a class to style the result accordingly
 function analyze_data_print() {
     attendees.forEach( attendee => {
-        document.getElementById("eval-" +attendee).innerHTML = sum[attendee]
+        document.querySelector(`#summary td[name=${attendee}]`).innerHTML = sum[attendee]
 
-        if      ( sum[attendee] > 0 ) { document.getElementById("eval-" +attendee).className = "number eval-positive" }
-        else if ( sum[attendee] < 0 ) { document.getElementById("eval-" +attendee).className = "number eval-negative" }
-        else                          { document.getElementById("eval-" +attendee).className = "number"               }
+        if      ( sum[attendee] > 0 ) { document.querySelector(`#summary td[name=${attendee}]`).className = "number positive" }
+        else if ( sum[attendee] < 0 ) { document.querySelector(`#summary td[name=${attendee}]`).className = "number negative" }
+        else                          { document.querySelector(`#summary td[name=${attendee}]`).className = "number"               }
     })
 }
 
@@ -130,7 +130,7 @@ function loaded() {
 
     analyze_data()
     analyze_data_print()
-    document.getElementById("eval-savings").innerHTML = sum.saved_trips
+    document.querySelector('#summary td[name=savings]').innerHTML = sum.saved_trips
 }
 
 // TODO?
@@ -139,5 +139,5 @@ function loaded() {
 // data.forEach( entry =>
 //     Object.keys(entry).forEach( el =>
 //             a.includes(el) || a.push(el)
-//     )             
+//     )
 //)

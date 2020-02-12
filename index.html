@@ -25,15 +25,15 @@ DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
             <table>
                 <tr>
                     <td>René</td>
-                    <td><input type='number' class='input-attendee' id='input-ren' name='ren' data-real-name='Ren�' value='0' min='-2' max='4'></td>
+                    <td><input type='number' class='input-attendee' name='René'value='0' min='-2' max='4'></td>
                 </tr>
                 <tr>
                     <td>Mattias</td>
-                    <td><input type='number' class='input-attendee' id='input-mat' name='mat'  data-real-name='Matthias'value='0' min='-2' max='4'></td>
+                    <td><input type='number' class='input-attendee' name='Matthias' value='0' min='-2' max='4'></td>
                 </tr>
                 <tr>
                     <td>Yvette</td>
-                    <td><input type='number' class='input-attendee' id='input-yve' name='yve'  data-real-name='Yvette' value='0' min='-2' max='4'></td>
+                    <td><input type='number' class='input-attendee' name='Yvette' value='0' min='-2' max='4'></td>
                 </tr>
                 <tr>
                     <td>Date</td>
@@ -45,24 +45,24 @@ DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
         <button onclick='submitData(new FormData(document.getElementById("form")))'>Submit</button>
     </div>
 
-    <div class='section' id='evaluation'>
+    <div class='section' id='summary'>
         <h2>Summary</h2>
         <table>
             <tr>
                 <td>René</td>
-                <td class='number' class='number'id='eval-ren'>-</td>
+                <td class='number' name='René'>-</td>
             </tr>
             <tr>
                 <td>Mattias</td>
-                <td class='number' class='number'id='eval-mat'>-</td>
+                <td class='number' name='Matthias'>-</td>
             </tr>
             <tr>
                 <td>Yvette</td>
-                <td class='number' class='number'id='eval-yve'>-</td>
+                <td class='number' name='Yvette'>-</td>
             </tr>
             <tr>
                 <td>Saved Trips</td>
-                <td class='number' id='eval-savings'>-</td>
+                <td class='number' name='savings'>-</td>
             </tr>
         </table>
         <button id='button_logShow' onclick='log_display("show")'>Show Log</button>

@@ -56,7 +56,7 @@ td {
     text-align: right;
     padding: 0 .75rem;
 }
-#evaluation tr:last-child td {
+#summary tr:last-child td {
     padding-top: .5rem;
 }
 
@@ -88,10 +88,10 @@ li {
     list-style-type: none;
 }
 
-.driver, .eval-positive {
+.driver, .positive {
       color: green;
 }
 
-.passenger, .eval-negative {
+.passenger, .negative {
       color: red;
 }
