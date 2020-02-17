@@ -19,9 +19,9 @@
     </div>
 
     <div class='section' id='interaction-area'>
-        <h2 title='PASSENGERs input how many times they were driven with a negative sign in front.
+        <h2 ondblclick="document.getElementById('td_date').removeAttribute('readonly')" title='PASSENGERs input how many times they were driven with a negative sign in front.
 DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
-        <form id='form' onsubmit='submitData(new FormData(document.getElementById("form")))'>
+        <form id='form'>
             <table>
                 <tr>
                     <td>René</td>
@@ -40,9 +40,8 @@ DRIVERs input how many trips they helped to avoid.'>Create/Change Entry</h2>
                     <td><input type='text'   title='YYYY-MM-DD' name='date' value='' id='td_date' readonly></td>
                 </tr>
             </table>
-            <!-- <button type='submit'>Submit</button> -->
         </form>
-        <button onclick='submitData(new FormData(document.getElementById("form")))'>Submit</button>
+        <button onclick='submitData()'>Submit</button>
     </div>
 
     <div class='section' id='summary'>

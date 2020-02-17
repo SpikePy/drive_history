@@ -1,4 +1,6 @@
 const data = [
+    {"date":"2020-02-17","René":-2,"Matthias":2,"Yvette":0},
+    {"date":"2020-02-11","René":0,"Matthias":2,"Yvette":-2},
     {"date":"2020-02-10", "René":1,"Matthias":0,"Yvette":-1},
     {"date":"2020-02-07", "René":-2,"Matthias":0,"Yvette":2},
     {"date":"2020-02-06", "René":1,"Matthias":0,"Yvette":-1},

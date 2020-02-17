@@ -1,10 +1,10 @@
 var attendees = []
-var sum       = {'René':0,'Matthias':0,'Yvette':0,'saved_trips':0}
+var sum = {}
 
 
 
 // Send input data via POST request to cgi script via button onclick
-function submitData(formData) {
+function submitData() {
 
     // Test if data are valid---meaning sum inputs have to be zero
     sum = 0
@@ -14,13 +14,27 @@ function submitData(formData) {
         return
     }
 
+
+    // Test if already an entry with this date and return its index, else returns -1
+    var index = data.map(entry => entry.date).indexOf(date)
+
+
     // Create array for CGI arguments with given date at index 0
-    var args_cgi = [`"date":"${document.getElementsByName('date')[0].value}"`]
+    var date = document.getElementById('td_date').value
+    //data[0]['date'] = date
+    var args_cgi = [`"date":"${date}"`]
+
 
     // From the Inputs build the string that can be directly inserted into the data file
-    attendees.forEach(
-        attendee => args_cgi.push(`"${attendee}":${document.getElementsByName(attendee)[0].value}`)
-    )
+    attendees.forEach( attendee => {
+        var value = parseInt(document.getElementsByName(attendee)[0].value)
+        //data[0][attendee] = value
+        args_cgi.push(`"${attendee}":${value}`)
+    })
+
+
+    //Add inputs directly to the data array, so no reload is the page is needed to show updates
+    //loaded()
 
     args_cgi = '{' + args_cgi.join(',') + '}'
 
@@ -28,11 +42,13 @@ function submitData(formData) {
     xhttp.open("POST", "/cgi-bin/drive_entry.cgi", true)
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function () {
-        if(this.readyState === XMLHttpRequest.DONE && this.status == 200) {
+        //if (this.readyState === XMLHttpRequest.DONE && this.status != 200) {
+        if (this.readyState === XMLHttpRequest.DONE && this.status == 200) {
             location.reload(false)
         }
     }
     xhttp.send(args_cgi)
+    console.log(args_cgi)
 }
 
 
@@ -81,15 +97,17 @@ function generate_log_entries() {
 
 
 function analyze_data() {
+    sum       = {'René':0,'Matthias':0,'Yvette':0,'saved_trips':0}
+
     // Loop through data, so every loop evaluates one log entry/day
-    data.forEach(el => {
+    data.forEach(entry => {
         // Loop attendees
-        attendees.forEach( attendee => sum[attendee] += el[attendee] )
+        attendees.forEach( attendee => sum[attendee] += entry[attendee] )
 
         /* Find out how many trips were saved by summing all negative entries (which means how many times anybody has been a pessenger).
          * So inside the loop for through all log entries all values are determined, then only the negative ones are taken in consideration
          * and the sum of the resulting array is created */
-        sum.saved_trips += -1 * Object.values(el)
+        sum.saved_trips += -1 * Object.values(entry)
                                   .filter(value => value < 0)
                                   .reduce((a,b) => a+b)
     })
@@ -115,6 +133,7 @@ function analyze_data_print() {
  * Should be executed when the site finished loading */
 function loaded() {
     // Fill the array 'attendees' with all carpool attendees via the name of the input fields
+    attendees = []
     document.querySelectorAll('input[type=number][name][value]').forEach(el => {attendees.push(el.name)})
 
     // Print date of last entry to page
