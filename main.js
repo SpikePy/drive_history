@@ -7,9 +7,9 @@ var sum = {}
 function submitData() {
 
     // Test if data are valid---meaning sum inputs have to be zero
-    sum = 0
-    attendees.forEach(attendee => {sum += parseInt(document.getElementsByName(attendee)[0].value)})
-    if (sum !== 0) {
+    var input_sum = 0
+    attendees.forEach(attendee => {input_sum += parseInt(document.getElementsByName(attendee)[0].value)})
+    if (input_sum !== 0) {
         alert('Please check your inputs. The sum of all inputs has to be 0!')
         return
     }
@@ -19,36 +19,47 @@ function submitData() {
     var index = data.map(entry => entry.date).indexOf(date)
 
 
-    // Create array for CGI arguments with given date at index 0
-    var date = document.getElementById('td_date').value
-    //data[0]['date'] = date
-    var args_cgi = [`"date":"${date}"`]
+    // Update data array directly, so no reload is needed
+    if (index >= 0) {
+        console.log('Change Entry')
 
+        // Change corresponding object to new data
+        attendees.forEach(
+            attendee => data[index][attendee] = parseInt(document.getElementsByName(attendee)[0].value)
+        )
 
-    // From the Inputs build the string that can be directly inserted into the data file
-    attendees.forEach( attendee => {
-        var value = parseInt(document.getElementsByName(attendee)[0].value)
-        //data[0][attendee] = value
-        args_cgi.push(`"${attendee}":${value}`)
-    })
+       // Remove already drawn history entries (triggers generate_log_entries if you want to show them)
+       if (document.getElementsByClassName('generated-entry').length > 0) {
+           Array.from(document.getElementsByClassName('generated-entry')).forEach(log_entry => log_entry.remove())
+       }
+    }
+    else {
+        console.log('Create Entry')
 
+        // Create a new empty object at the beginning of the data array
+	data.unshift({})
+	data[0]['date'] = date
+	attendees.forEach(
+            attendee => data[0][attendee] = parseInt(document.getElementsByName(attendee)[0].value)
+	)
+    }
 
-    //Add inputs directly to the data array, so no reload is the page is needed to show updates
-    //loaded()
+    // After updating data array trigger calculations again to show updated results on the page
+    loaded()
 
-    args_cgi = '{' + args_cgi.join(',') + '}'
+    // Convert new data object to POST it to the cgi script
+    args_cgi = JSON.stringify(data[index])
 
+    // POST updated data
     var xhttp = new XMLHttpRequest()
     xhttp.open("POST", "/cgi-bin/drive_entry.cgi", true)
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function () {
-        //if (this.readyState === XMLHttpRequest.DONE && this.status != 200) {
-        if (this.readyState === XMLHttpRequest.DONE && this.status == 200) {
-            location.reload(false)
+        if (this.readyState === XMLHttpRequest.DONE && this.status != 200) {
+            location.reload(true)
         }
     }
     xhttp.send(args_cgi)
-    console.log(args_cgi)
 }
 
 
