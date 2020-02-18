@@ -30,14 +30,32 @@ write_data() {
     fi
 }
 
+check_data() {
+    # Test if Arguments match Pattern to prevent Misuse
+    if grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\}$' <<< $data; then
+        echo '<pattern>match</pattern>'
+    else
+        echo '<pattern>mismatch</pattern>'
+	echo '<error>Arguments do not match defined pattern. Aborting script to prevent misuse.</error>'
+        echo '</response>'
+	exit
+    fi
+}
+
 write_data_all() {
     echo -en "data = $data" > $file_data
 }
 
-check_data() {
+check_data_all() {
     # Test if Arguments match Pattern to prevent Misuse
-    grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\}$' <<< $data \
-      || { echo 'Error: Arguments do not match defined pattern. Aborting script to prevent misuse.'; exit; }
+    if grep --quiet --perl-regexp '^\[({"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\},?)+\]$' <<< $data; then
+        echo '<pattern>match</pattern>'
+    else
+        echo '<pattern>mismatch</pattern>'
+	echo '<error>Arguments do not match defined pattern. Aborting script to prevent misuse.</error>'
+        echo '</response>'
+	exit
+    fi
 }
 
 
@@ -48,5 +66,6 @@ echo '<response>'
 echo "<data>$data</data>"
 #check_data
 #write_data
+check_data_all
 write_data_all
 echo '</response>'
