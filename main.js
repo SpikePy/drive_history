@@ -5,10 +5,16 @@ var sum = {}
 
 // Send input data via POST request to cgi script via button onclick
 function submitData() {
+    var input_sum     = 0
+    var input_sum_abs = 0
 
     // Test if data are valid---meaning sum inputs have to be zero
-    var input_sum = 0
-    attendees.forEach(attendee => {input_sum += parseInt(document.getElementsByName(attendee)[0].value)})
+    attendees.forEach(attendee => {
+        input_sum     += parseInt(document.getElementsByName(attendee)[0].value)
+        input_sum_abs += Math.abs(parseInt(document.getElementsByName(attendee)[0].value))
+    })
+
+    // Show error if sum of inputs not equals 0
     if (input_sum !== 0) {
         alert('Please check your inputs. The sum of all inputs has to be 0!')
         return
@@ -23,32 +29,38 @@ function submitData() {
     if (index >= 0) {
         console.log('Change Entry')
 
-        // Change corresponding object to new data
-        attendees.forEach(
-            attendee => data[index][attendee] = parseInt(document.getElementsByName(attendee)[0].value)
-        )
+        if (input_sum_abs === 0) {
+            data.splice(index, 1)
+        }
+        else {
+            // Change corresponding object to new data
+            attendees.forEach(attendee => data[index][attendee] = parseInt(document.getElementsByName(attendee)[0].value))
+	}
 
-       // Remove already drawn history entries (triggers generate_log_entries if you want to show them)
-       if (document.getElementsByClassName('generated-entry').length > 0) {
-           Array.from(document.getElementsByClassName('generated-entry')).forEach(log_entry => log_entry.remove())
-       }
     }
     else {
-        console.log('Create Entry')
+        if (input_sum_abs !== 0) {
+            // Create a new empty object at the beginning of the data array
+            console.log('Create Entry')
+	    data.unshift({})
+	    data[0]['date'] = date
+	    attendees.forEach(
+                attendee => data[0][attendee] = parseInt(document.getElementsByName(attendee)[0].value)
+	    )
+        }
+        else {
+            console.log('Nothing to add (input_sum_abs === 0)')
+            return
+	}
+    }
 
-        // Create a new empty object at the beginning of the data array
-	data.unshift({})
-	data[0]['date'] = date
-	attendees.forEach(
-            attendee => data[0][attendee] = parseInt(document.getElementsByName(attendee)[0].value)
-	)
+    // Remove already drawn history entries (triggers generate_log_entries if you want to show them)
+    if (document.getElementsByClassName('generated-entry').length > 0) {
+        Array.from(document.getElementsByClassName('generated-entry')).forEach(log_entry => log_entry.remove())
     }
 
     // After updating data array trigger calculations again to show updated results on the page
     loaded()
-
-    // Convert new data object to POST it to the cgi script
-    args_cgi = JSON.stringify(data[index])
 
     // POST updated data
     var xhttp = new XMLHttpRequest()
@@ -56,10 +68,11 @@ function submitData() {
     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.onreadystatechange = function () {
         if (this.readyState === XMLHttpRequest.DONE && this.status != 200) {
+	    alert('Error in cli script. Could not persist data.')
             location.reload(true)
         }
     }
-    xhttp.send(args_cgi)
+    xhttp.send(JSON.stringify(data))
 }
 
 
@@ -91,13 +104,13 @@ function generate_log_entries() {
         entry.innerHTML = `<td>${el.date}</td>`
         attendees.forEach( attendee => {
             if (el[attendee] > 0) {
-                entry.innerHTML += `<td class='driver'>${el[attendee]}</td>`
+                entry.innerHTML += `<td class='driver'><span>${el[attendee]}</span></td>`
             }
             else if (el[attendee] < 0) {
-                entry.innerHTML += `<td class='passenger'>${el[attendee]}</td>`
+                entry.innerHTML += `<td class='passenger'><span>${el[attendee]}</span></td>`
             }
             else {
-                entry.innerHTML += `<td class='hidden'>${el[attendee]}</td>`
+                entry.innerHTML += `<td class='hidden'><span>${el[attendee]}</span></td>`
 	    }
         })
     
@@ -111,7 +124,7 @@ function analyze_data() {
     sum       = {'René':0,'Matthias':0,'Yvette':0,'saved_trips':0}
 
     // Loop through data, so every loop evaluates one log entry/day
-    data.forEach(entry => {
+    data.forEach( (entry,i) => {
         // Loop attendees
         attendees.forEach( attendee => sum[attendee] += entry[attendee] )
 

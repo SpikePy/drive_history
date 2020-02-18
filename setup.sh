@@ -4,4 +4,5 @@
 
     ln -s $PWD                      /var/www/html/${PWD##*/}
     ln -s $PWD/drive_entry.cgi      /var/www/cgi-bin/
+    sudo chmod 777                  data.js
 )

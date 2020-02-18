@@ -6,34 +6,37 @@
 readonly file_data='/var/www/html/drive_history/data.js'
 
 # Get Parameter from URL Arguments
-read -ra url_parameters
-readonly url_parameters
+read -ra data
+readonly data
 
 
 # Functions
 ################################################################################
 write_data() {
-    # Parse date from url_parameters
-    date=`grep -Po '\d{4}.\d{2}.\d{2}' <<< "$url_parameters"`
+    # Parse date from data
+    date=`grep -Po '\d{4}.\d{2}.\d{2}' <<< "$data"`
     echo "<date>$date</date>"
 
     if before=`grep --quiet "$date" $file_data`; then
         echo "<entry>changed</entry>"
 
         # Store data in dedicated file
-	(sed "s|.*$date.*|    $url_parameters,|" -i $file_data || echo "Error while writing data with sed") &
+	(sed "s|.*$date.*|    $data,|" -i $file_data || echo "Error while writing data with sed") &
     else
         echo "<entry>added</entry>"
 
         # Store data in dedicated file
-        (sed "2i\    $url_parameters," -i $file_data || echo "Error while writing data with sed") &
+        (sed "2i\    $data," -i $file_data || echo "Error while writing data with sed") &
     fi
 }
 
+write_data_all() {
+    echo -en "data = $data" > $file_data
+}
 
-check_url_parameters() {
+check_data() {
     # Test if Arguments match Pattern to prevent Misuse
-    grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\}$' <<< $url_parameters \
+    grep --quiet --perl-regexp '^\{"date":"\d{4}-\d{2}-\d{2}",("[\wé]+":-?\d+,?)*\}$' <<< $data \
       || { echo 'Error: Arguments do not match defined pattern. Aborting script to prevent misuse.'; exit; }
 }
 
@@ -42,7 +45,8 @@ check_url_parameters() {
 ################################################################################
 
 echo '<response>'
-echo "<url_parameters>$url_parameters</url_parameters>"
-check_url_parameters
-write_data
+echo "<data>$data</data>"
+#check_data
+#write_data
+write_data_all
 echo '</response>'

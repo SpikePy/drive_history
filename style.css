@@ -53,8 +53,13 @@ th {
 }
 td {
     font-size: 1rem;
+    text-align: center;
+    padding: 0 .5rem;
+}
+td > span {
+    display: inline-block; 
+    width: 2rem;
     text-align: right;
-    padding: 0 .75rem;
 }
 #summary tr:last-child td {
     padding-top: .5rem;
